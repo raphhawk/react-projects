@@ -14,23 +14,48 @@ function App() {
     setTours(newTours);
   };
 
+  const fetchData = async () => {
+    try {
+      const resp = await fetch(url);
+      const data = await resp.json();
+      setTours(data);
+
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resp = await fetch(url);
-        const data = await resp.json();
-        setTours(data);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <main>
+        <Loading />
+      </main>
+    );
+  }
+  if (!tours.length) {
+    return (
+      <main>
+        <div className="text-center text-5xl text-bold p-20">
+          <h2>no tours found</h2>
+          <button
+            type="button"
+            className="text-white bg-purple-600 mt-10 rounded-lg p-4"
+            onClick={() => {
+              setLoading(true);
+              fetchData();
+            }}
+          >
+            Refresh
+          </button>
+        </div>
+      </main>
+    );
   }
 
   return (
