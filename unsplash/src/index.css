@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .dark-theme {
+    @apply bg-zinc-800 text-white transition ease-in-out;
+  }
+}
